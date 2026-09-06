@@ -21,7 +21,7 @@ runs:
        python-version: "3.14"
 
    - id: install-shexli
-     run: pip install -r requirements.txt
+     run: pip install -r ${{ github.action_path }}/requirements.txt
      shell: bash
 
    - id: run-shexli
