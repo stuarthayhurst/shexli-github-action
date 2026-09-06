@@ -11,6 +11,10 @@ inputs:
     description: "Path to the extension bundle"
     required: true
     default: ""
+  use-latest-shexli:
+    description: "Override the pinned version of Shexli with the latest release"
+    required: false
+    default: "false"
 
 runs:
   using: "composite"
@@ -20,8 +24,14 @@ runs:
      with:
        python-version: "3.14"
 
-   - id: install-shexli
+   - id: install-shexli-latest
+     run: pip install shexli
+     if: ${{ inputs.use-latest-shexli == 'true' }}
+     shell: bash
+
+   - id: install-shexli-pinned
      run: pip install -r ${{ github.action_path }}/requirements.txt
+     if: ${{ inputs.use-latest-shexli != 'true' }}
      shell: bash
 
    - id: run-shexli
