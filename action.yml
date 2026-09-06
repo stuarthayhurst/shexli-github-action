@@ -4,7 +4,7 @@ description: "Run Shexli against a built GNOME extension"
 
 branding:
   icon: "flag"
-  color: "limegreen"
+  color: "green"
 
 inputs:
   path:
