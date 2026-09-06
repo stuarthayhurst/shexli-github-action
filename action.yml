@@ -26,6 +26,6 @@ runs:
 
    - id: run-shexli
      run: ${{ github.action_path }}/run-shexli.py
-     shell: python
+     shell: bash
      env:
        EXTENSION_PATH: "${{ inputs.path }}"
