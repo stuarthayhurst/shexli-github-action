@@ -22,8 +22,10 @@ runs:
 
    - id: install-shexli
      run: pip install -r requirements.txt
+     shell: bash
 
    - id: run-shexli
      run: ${{ github.action_path }}/run-shexli.py
+     shell: python
      env:
        EXTENSION_PATH: "${{ inputs.path }}"
