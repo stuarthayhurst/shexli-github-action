@@ -2,10 +2,70 @@
 import os
 import shexli
 
+def processResults(results, ignoredChecksList):
+  processedResults = {}
+  processedResults["findings"] = []
+
+  errorCount = 0
+  warningCount = 0
+
+  #Process reported findings into a simplified form
+  for finding in results.findings:
+    #Skip ignored rules
+    if finding.rule_id in ignoredChecksList:
+      continue
+
+    processedFinding = {}
+
+    #Merge the rule ID and title, record the message
+    processedFinding["title"] = f"[{finding.rule_id}]: {finding.title}"
+    processedFinding["message"] = finding.message
+
+    #Record and track severity
+    processedFinding["severity"] = finding.severity
+    if processedFinding["severity"] == "error":
+      errorCount += 1
+    elif processedFinding["severity"] == "warning":
+      warningCount += 1
+    else:
+      print(f"Unknown finding type '{finding.severity}'")
+
+    #Process instances of the finding in the source code
+    processedFinding["instances"] = []
+    for evidence in finding.evidence:
+      instance = {}
+      instance["entry"] = f"{evidence.path}:{evidence.line}"
+      instance["sourceCode"] = evidence.snippet
+      processedFinding["instances"].append(instance)
+
+    #Process check details
+    processedFinding["ruleUrl"] = finding.source_url
+    processedFinding["ruleSection"] = finding.source_section
+
+    processedResults["findings"].append(processedFinding)
+
+  processedResults["errors"] = errorCount
+  processedResults["warnings"] = warningCount
+
+  return processedResults
+
+def printResults(processedResults):
+  print(processedResults)
+
+def checkViolations(processedResults, violationType, threshold):
+  #Fail if too many violations are reported
+  violationCount = processedResults[f"{violationType}s"]
+  if (threshold >= 0 and violationCount > threshold):
+    print(f"{violationCount} {violationType}(s) detected, greater than allowed limit of {threshold}")
+    return False
+
+  return True
+
 #Fetch the environment
 extensionPath = os.environ.get("EXTENSION_PATH", "")
 maxErrors = os.environ.get("MAX_ERRORS", "0")
 maxWarnings = os.environ.get("MAX_WARNINGS", "-1")
+ignoredChecks = os.environ.get("IGNORE_CHECKS", "")
 
 #Verify the extension bundle path
 if (extensionPath == ""):
@@ -27,20 +87,18 @@ except ValueError:
   print("Maximum warning count threshold must be numerical")
   exit(1)
 
+#Split ignored checks
+ignoredChecksList = [check for check in ignoredChecks.split(" ") if check != ""]
+
 #Analyse the extension bundle
 results = shexli.analyze_path(extensionPath)
+processedResults = processResults(results, ignoredChecksList)
 
-#TODO: Process the results, handling exceptions, warnings, errors and return codes
-print(results)
+#Display the processed results
+printResults(processedResults)
 
-#Fail if too many errors are reported
-errorCount = results.summary["severity_counts"]["error"]
-if (maxErrors >= 0 and errorCount > maxErrors):
-  print(f"{errorCount} error(s) detected, greater than allowed limit of {maxErrors}")
-  exit(1)
-
-#Fail if too many warnings are reported
-warningCount = results.summary["severity_counts"]["warning"]
-if (maxWarnings >= 0 and warningCount > maxWarnings):
-  print(f"{warningCount} warnings(s) detected, greater than allowed limit of {maxWarnings}")
+#Fail if too many errors or warnings were found
+passed = checkViolations(processedResults, "error", maxErrors)
+passed &= checkViolations(processedResults, "warning", maxWarnings)
+if not passed:
   exit(1)
