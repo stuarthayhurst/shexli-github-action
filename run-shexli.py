@@ -55,11 +55,17 @@ def printResults(processedResults):
 def checkViolations(processedResults, violationType, threshold):
   #Fail if too many violations are reported
   violationCount = processedResults[f"{violationType}s"]
-  if (threshold >= 0 and violationCount > threshold):
-    print(f"{violationCount} {violationType}(s) detected, greater than allowed limit of {threshold}")
-    return False
+  failed = (threshold >= 0 and violationCount > threshold)
 
-  return True
+  if failed:
+    print(f"{violationCount} {violationType}(s) detected, greater than allowed limit of {threshold}")
+  else:
+    if (violationCount > 0):
+      print(f"{violationCount} {violationType}(s) detected (non-fatal)")
+    else:
+      print(f"{violationCount} {violationType}(s) detected")
+
+  return (not failed)
 
 #Fetch the environment
 extensionPath = os.environ.get("EXTENSION_PATH", "")
