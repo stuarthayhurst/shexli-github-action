@@ -22,6 +22,10 @@ inputs:
     description: "Maximum acceptable number of warnings before failing the action (-1 to disable)"
     required: false
     default: "-1"
+  ignored-checks:
+    description: "Space delimited string of rule IDs to ignored (e.g. 'EGO-M-004 EGO-L-005')"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -48,3 +52,4 @@ runs:
        EXTENSION_PATH: "${{ inputs.path }}"
        MAX_ERRORS: "${{ inputs.acceptable-error-threshold }}"
        MAX_WARNINGS: "${{ inputs.acceptable-warning-threshold }}"
+       IGNORE_CHECKS: "${{ inputs.ignored-checks }}"
