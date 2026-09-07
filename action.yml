@@ -15,6 +15,14 @@ inputs:
     description: "Override the pinned version of Shexli with the latest release"
     required: false
     default: "false"
+  acceptable-error-threshold:
+    description: "Maximum acceptable number of errors before failing the action (-1 to disable)"
+    required: false
+    default: "0"
+  acceptable-warning-threshold:
+    description: "Maximum acceptable number of warnings before failing the action (-1 to disable)"
+    required: false
+    default: "-1"
 
 runs:
   using: "composite"
@@ -39,3 +47,5 @@ runs:
      shell: bash
      env:
        EXTENSION_PATH: "${{ inputs.path }}"
+       MAX_ERRORS: "${{ inputs.acceptable-error-threshold }}"
+       MAX_WARNINGS: "${{ inputs.acceptable-warning-threshold }}"
