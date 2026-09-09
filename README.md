@@ -33,7 +33,7 @@
     - Defaults to `-1`
     - Use `-1` to disable failing the action due to errors
   - `ignored-checks`: Space delimited string of rule IDs to ignored
-    - `Defaults to ""`
+    - Defaults to `""`
     - For example, use `'EGO-M-004 EGO-L-005'` to disable metadata GNOME Shell version checks and owned object release checks
     - A list of checks can be found [here](https://gitlab.gnome.org/Infrastructure/extensions-web/-/blob/master/shexli/shexli/spec.py)
 
@@ -61,7 +61,7 @@
      path: build/AlphabeticalAppGrid@stuarthayhurst.shell-extension.zip
      acceptable-warning-threshold: 0
 ```
-  - Check a extension's source with the latest Shexli, ignoring metadata GNOME Shell version errors:
+  - Check an extension's source with the latest Shexli, ignoring metadata GNOME Shell version errors:
 ```
  - name: Run Shexli on the extension
    uses: stuarthayhurst/shexli-github-action@master
