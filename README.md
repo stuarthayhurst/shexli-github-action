@@ -8,7 +8,7 @@
   - Include the action in your workflow and tell it where to find the extension:
 ```
  - name: Run Shexli on the extension
-   uses: stuarthayhurst/shexli-github-action@master
+   uses: stuarthayhurst/shexli-github-action@v1
    with:
      path: build/AlphabeticalAppGrid@stuarthayhurst.shell-extension.zip
 ```
@@ -41,14 +41,14 @@
   - Check a built extension and fail only on errors:
 ```
  - name: Run Shexli on the extension
-   uses: stuarthayhurst/shexli-github-action@master
+   uses: stuarthayhurst/shexli-github-action@v1
    with:
      path: build/AlphabeticalAppGrid@stuarthayhurst.shell-extension.zip
 ```
   - Check a built extension and never fail:
 ```
  - name: Run Shexli on the extension
-   uses: stuarthayhurst/shexli-github-action@master
+   uses: stuarthayhurst/shexli-github-action@v1
    with:
      path: build/AlphabeticalAppGrid@stuarthayhurst.shell-extension.zip
      acceptable-error-threshold: -1
@@ -56,7 +56,7 @@
   - Check a built extension and fail on errors and warnings:
 ```
  - name: Run Shexli on the extension
-   uses: stuarthayhurst/shexli-github-action@master
+   uses: stuarthayhurst/shexli-github-action@v1
    with:
      path: build/AlphabeticalAppGrid@stuarthayhurst.shell-extension.zip
      acceptable-warning-threshold: 0
@@ -64,7 +64,7 @@
   - Check an extension's source with the latest Shexli, ignoring metadata GNOME Shell version errors:
 ```
  - name: Run Shexli on the extension
-   uses: stuarthayhurst/shexli-github-action@master
+   uses: stuarthayhurst/shexli-github-action@v1
    with:
      path: extension/
      use-latest-shexli: true
