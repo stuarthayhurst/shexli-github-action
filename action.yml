@@ -1,6 +1,6 @@
 name: "run-shexli"
 author: "Stuart Hayhurst"
-description: "Run Shexli against a built GNOME extension"
+description: "Run Shexli against a GNOME extension"
 
 branding:
   icon: "flag"
