@@ -94,7 +94,11 @@ ignoredChecks = os.environ.get("IGNORE_CHECKS", "")
 if (extensionPath == ""):
   print("No extension bundle path specified")
   exit(1)
-elif (not os.path.isfile(extensionPath)):
+
+#Convert directory paths to full paths or check bundle exists
+if os.path.isdir(extensionPath):
+  extensionPath = os.path.abspath(extensionPath)
+elif not os.path.isfile(extensionPath):
   print(f"'{extensionPath}' isn't an extension bundle")
   exit(1)
 
