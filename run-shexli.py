@@ -2,6 +2,7 @@
 import os
 import shexli
 
+#Reformat extensions analysis results
 def processResults(results, ignoredChecksList):
   processedResults = {}
   processedResults["findings"] = []
@@ -40,7 +41,6 @@ def processResults(results, ignoredChecksList):
 
     #Process check details
     processedFinding["ruleUrl"] = finding.source_url
-    processedFinding["ruleSection"] = finding.source_section
 
     processedResults["findings"].append(processedFinding)
 
@@ -49,8 +49,25 @@ def processResults(results, ignoredChecksList):
 
   return processedResults
 
+#Print formatted results
 def printResults(processedResults):
-  print(processedResults)
+  for finding in processedResults["findings"]:
+    #Print finding title and message
+    print(f"{finding['severity'].capitalize()}: {finding['title']}")
+    print(f" - Message: {finding['message']}")
+
+    #Show code violations
+    for evidence in finding["instances"]:
+      indented = False
+      if (len(evidence['sourceCode']) > 0):
+        indented = evidence['sourceCode'][0].isspace()
+      if indented:
+        print(f" - Code:\n{evidence['sourceCode']} ({evidence['entry']})")
+      else:
+        print(f" - Code: {evidence['sourceCode']} ({evidence['entry']})")
+
+    #Print rule information
+    print(f" - URL: {finding['ruleUrl']}\n")
 
 def checkViolations(processedResults, violationType, threshold):
   #Fail if too many violations are reported
