@@ -31,7 +31,7 @@
     - Use `-1` to disable failing the action due to errors
   - `acceptable-warning-threshold`: Maximum acceptable number of warnings before failing the action
     - Defaults to `-1`
-    - Use `-1` to disable failing the action due to errors
+    - Use `-1` to disable failing the action due to warnings
   - `ignored-checks`: Space delimited string of rule IDs to ignored
     - Defaults to `""`
     - For example, use `'EGO-M-004 EGO-L-005'` to disable metadata GNOME Shell version checks and owned object release checks
